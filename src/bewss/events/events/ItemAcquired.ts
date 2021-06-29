@@ -10,18 +10,18 @@ class ItemAcquired {
   }
 
   async onEnabled(): Promise<void> {
-    this.bewss.getEventManager().registerEvent('ItemAcquired')
+    this.bewss.getEventManager().registerEvent(this.eventName)
     this.bewss.getServerManager().getServer()
       .on('message', (packet: string) => {
         const parsedPacket = JSON.parse(packet)
         if (parsedPacket.header.messagePurpose != 'event') return
-        if (parsedPacket.body.eventName != 'ItemAcquired') return
-        this.bewss.getEventManager().emit('ItemAcquired', parsedPacket)
+        if (parsedPacket.body.eventName != this.eventName) return
+        this.bewss.getEventManager().emit(this.eventName, parsedPacket)
       })
   }
 
   async onDisabled(): Promise<void> {
-    this.bewss.getEventManager().unregisterEvent('ItemAcquired')
+    this.bewss.getEventManager().unregisterEvent(this.eventName)
   }
 
 }

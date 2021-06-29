@@ -10,18 +10,19 @@ class BlockBroken {
   }
 
   async onEnabled(): Promise<void> {
-    this.bewss.getEventManager().registerEvent('BlockBroken')
+    this.bewss.getEventManager().registerEvent(this.eventName)
     this.bewss.getServerManager().getServer()
       .on('message', (packet: string) => {
         const parsedPacket = JSON.parse(packet)
         if (parsedPacket.header.messagePurpose != 'event') return
-        if (parsedPacket.body.eventName != 'BlockBroken') return
-        this.bewss.getEventManager().emit('BlockBroken', parsedPacket)
+        if (parsedPacket.body.eventName != this.eventName) return
+        console.log(parsedPacket);
+        this.bewss.getEventManager().emit(this.eventName, parsedPacket)
       })
   }
 
   async onDisabled(): Promise<void> {
-    this.bewss.getEventManager().unregisterEvent('BlockBroken')
+    this.bewss.getEventManager().unregisterEvent(this.eventName)
   }
 
 }

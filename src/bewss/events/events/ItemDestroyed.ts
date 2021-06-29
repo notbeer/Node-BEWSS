@@ -10,18 +10,18 @@ class ItemDestroyed {
   }
 
   async onEnabled(): Promise<void> {
-    this.bewss.getEventManager().registerEvent('ItemDestroyed')
+    this.bewss.getEventManager().registerEvent(this.eventName)
     this.bewss.getServerManager().getServer()
       .on('message', (packet: string) => {
         const parsedPacket = JSON.parse(packet)
         if (parsedPacket.header.messagePurpose != 'event') return
-        if (parsedPacket.body.eventName != 'ItemDestroyed') return
-        this.bewss.getEventManager().emit('ItemDestroyed', parsedPacket)
+        if (parsedPacket.body.eventName != this.eventName) return
+        this.bewss.getEventManager().emit(this.eventName, parsedPacket)
       })
   }
 
   async onDisabled(): Promise<void> {
-    this.bewss.getEventManager().unregisterEvent('ItemDestroyed')
+    this.bewss.getEventManager().unregisterEvent(this.eventName)
   }
 
 }

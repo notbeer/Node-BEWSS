@@ -10,18 +10,18 @@ class PlayerTravelled {
   }
 
   async onEnabled(): Promise<void> {
-    this.bewss.getEventManager().registerEvent('PlayerTravelled')
+    this.bewss.getEventManager().registerEvent(this.eventName)
     this.bewss.getServerManager().getServer()
       .on('message', (packet: string) => {
         const parsedPacket = JSON.parse(packet)
         if (parsedPacket.header.messagePurpose != 'event') return
-        if (parsedPacket.body.eventName != 'PlayerTravelled') return
-        this.bewss.getEventManager().emit('PlayerTravelled', parsedPacket)
+        if (parsedPacket.body.eventName != this.eventName) return
+        this.bewss.getEventManager().emit(this.eventName, parsedPacket)
       })
   }
 
   async onDisabled(): Promise<void> {
-    this.bewss.getEventManager().unregisterEvent('PlayerTravelled')
+    this.bewss.getEventManager().unregisterEvent(this.eventName)
   }
 
 }

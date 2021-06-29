@@ -10,18 +10,18 @@ class EntitySpawned {
   }
 
   async onEnabled(): Promise<void> {
-    this.bewss.getEventManager().registerEvent('EntitySpawned')
+    this.bewss.getEventManager().registerEvent(this.eventName)
     this.bewss.getServerManager().getServer()
       .on('message', (packet: string) => {
         const parsedPacket = JSON.parse(packet)
         if (parsedPacket.header.messagePurpose != 'event') return
-        if (parsedPacket.body.eventName != 'EntitySpawned') return
-        this.bewss.getEventManager().emit('EntitySpawned', parsedPacket)
+        if (parsedPacket.body.eventName != this.eventName) return
+        this.bewss.getEventManager().emit(this.eventName, parsedPacket)
       })
   }
 
   async onDisabled(): Promise<void> {
-    this.bewss.getEventManager().unregisterEvent('EntitySpawned')
+    this.bewss.getEventManager().unregisterEvent(this.eventName)
   }
 
 }

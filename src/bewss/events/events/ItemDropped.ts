@@ -10,18 +10,18 @@ class ItemDropped {
   }
 
   async onEnabled(): Promise<void> {
-    this.bewss.getEventManager().registerEvent('ItemDropped')
+    this.bewss.getEventManager().registerEvent(this.eventName)
     this.bewss.getServerManager().getServer()
       .on('message', (packet: string) => {
         const parsedPacket = JSON.parse(packet)
         if (parsedPacket.header.messagePurpose != 'event') return
-        if (parsedPacket.body.eventName != 'ItemDropped') return
-        this.bewss.getEventManager().emit('ItemDropped', parsedPacket)
+        if (parsedPacket.body.eventName != this.eventName) return
+        this.bewss.getEventManager().emit(this.eventName, parsedPacket)
       })
   }
 
   async onDisabled(): Promise<void> {
-    this.bewss.getEventManager().unregisterEvent('ItemDropped')
+    this.bewss.getEventManager().unregisterEvent(this.eventName)
   }
 
 }
